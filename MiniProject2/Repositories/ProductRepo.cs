@@ -67,11 +67,11 @@ namespace MiniProject2.Repositories
             {
                 prod.ProductName = product.ProductName;
                 prod.Price = product.Price;
-                prod.categoryId = product.categoryId;
+                prod.CategoryId = product.CategoryId;
                 prod.ImageURL = product.ImageURL;
-                prod.description = product.description;
-                prod.stock = product.stock;
-                prod.discount = product.discount;
+                prod.Description = product.Description;
+                prod.Stock = product.Stock;
+                prod.Discount = product.Discount;
                 res = _db.SaveChanges();
             }
             return res;

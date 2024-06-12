@@ -34,6 +34,10 @@ builder.Services.AddAuthorization(options => {
         builder => builder.RequireRole("Admin"));
 });
 
+builder.Services.AddScoped<IProductRepo, ProductRepo>();
+builder.Services.AddScoped<IProductService, ProductService>();
+
+
 
 
 var app = builder.Build();
@@ -60,7 +64,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Category}/{action=Index}/{id?}");
+    pattern: "{controller=Product}/{action=Index}/{id?}");
     
 
 app.MapRazorPages();

@@ -16,16 +16,16 @@ namespace MiniProject2.Models
         [Display(Name ="Upload Image")]
         public string? ImageURL { get; set; }
         [ForeignKey("categoryId")]
-        public int categoryId { get; set; }
+        public int CategoryId { get; set; }
         [ScaffoldColumn(false)]
 
-        public string? categoryName { get; set; }
+        public string? CategoryName { get; set; }
 
-        public int discount { get; set; }
+        public int Discount { get; set; }
         [Required]
         [MaxLength(300)]
-        public string? description { get; set; }
-        public int stock { get; set; }
+        public string? Description { get; set; }
+        public int Stock { get; set; }
 
 
     }

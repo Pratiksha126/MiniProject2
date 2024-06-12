@@ -1,51 +1,53 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MiniProject2.Models;
 using MiniProject2.Services;
 
 namespace MiniProject2.Controllers
 {
-    
-
-    public class CategoryController : Controller
+    public class ProductController : Controller
     {
-        private readonly ICategoryService service;
+        private readonly IProductService service;  
 
-        public CategoryController(ICategoryService service)
+        public ProductController(IProductService service)
         {
             this.service = service;
         }
-
-        // GET: CategoryController
+        // GET: ProductController
         public ActionResult Index()
         {
-            var model = service.GetAllCategories();
+            var model = service.GetAllProducts();
             return View(model);
             
         }
 
-        // GET: CategoryController/Details/5
+        // GET: ProductController/Details/5
         public ActionResult Details(int id)
         {
-            var category = service.GetCategoryById(id);
-            return View(category);
+            var product = service.GetProductById(id);
+            return View(product);
+           
         }
 
-        // GET: CategoryController/Create
+        // GET: ProductController/Create
         public ActionResult Create()
         {
+
             return View();
         }
 
-        // POST: CategoryController/Create
+        // POST: ProductController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Category category)
+        public ActionResult Create(Product product)
         {
+            using (var fs = new FileStream(_iHostEnv.WebRootPath + "\\images\\" + file.FileName, FileMode.Create, FileAccess.Write))
+            {
+                file.CopyTo(fs);
+            }
             try
             {
-                int result = service.AddCategory(category);
+                int result = service.AddProduct(product);
                 if (result >= 1)
                 {
                     return RedirectToAction(nameof(Index));
@@ -57,31 +59,30 @@ namespace MiniProject2.Controllers
                 }
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ViewBag.ErrorMsg = ex.Message;
                 return View();
             }
         }
 
-        // GET: CategoryController/Edit/5
+        // GET: ProductController/Edit/5
         public ActionResult Edit(int id)
         {
-            var category = service.GetCategoryById(id);
+            var product = service.GetProductById(id);
 
-            return View(category);
+            return View(product);
             
         }
 
-        // POST: CategoryController/Edit/5
+        // POST: ProductController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        
-        public ActionResult Edit(Category category)
+        public ActionResult Edit(Product product)
         {
             try
             {
-                int result = service.UpdateCategory(category);
+                int result = service.UpdateProduct(product);
 
                 if (result >= 1)
                 {
@@ -93,23 +94,25 @@ namespace MiniProject2.Controllers
                     ViewBag.ErrorMsg = "Something went wrong";
                     return View();
                 }
+
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ViewBag.ErrorMsg = ex.Message;
                 return View();
             }
         }
 
-        // GET: CategoryController/Delete/5
+        // GET: ProductController/Delete/5
         public ActionResult Delete(int id)
         {
-            var category = service.GetCategoryById(id);
-            return View(category);
+            var product = service.GetProductById(id);
+            return View(product);
             
         }
 
-        // POST: CategoryController/Delete/5
+        // POST: ProductController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ActionName("Delete")]
@@ -117,7 +120,7 @@ namespace MiniProject2.Controllers
         {
             try
             {
-                int result = service.DeleteCategory(id);
+                int result = service.DeleteProduct(id);
 
                 if (result >= 1)
                 {
@@ -130,7 +133,7 @@ namespace MiniProject2.Controllers
                     return View();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ViewBag.ErrorMsg = ex.Message;
                 return View();

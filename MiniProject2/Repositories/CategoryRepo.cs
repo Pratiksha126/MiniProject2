@@ -24,7 +24,7 @@ namespace MiniProject2.Repositories
         public int DeleteCategory(int id)
         {
             int res = 0;
-            var category = _db.Categories.Where(x => x.categoryId == id).FirstOrDefault();
+            var category = _db.Categories.Where(x => x.CategoryId == id).FirstOrDefault();
             if (category != null)
             {
                 _db.Categories.Remove(category);
@@ -42,7 +42,7 @@ namespace MiniProject2.Repositories
 
         public Category GetCategoryById(int id)
         {
-            var category = _db.Categories.Where(x => x.categoryId == id).FirstOrDefault();
+            var category = _db.Categories.Where(x => x.CategoryId == id).FirstOrDefault();
             return category;
 
         }
@@ -50,10 +50,10 @@ namespace MiniProject2.Repositories
         public int UpdateCategory(Category category)
         {
             int res = 0;
-            var c = _db.Categories.Where(x => x.categoryId == category.categoryId).FirstOrDefault();
+            var c = _db.Categories.Where(x => x.CategoryId == category.CategoryId).FirstOrDefault();
             if (c != null)
             {
-                c.categoryName = category.categoryName;
+                c.CategoryName = category.CategoryName;
                 res = _db.SaveChanges();
             }
             return res;

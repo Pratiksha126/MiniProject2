@@ -5,8 +5,8 @@ namespace MiniProject2.Models
     public class Category
     {
         [Key]
-        public int categoryId { get; set; }
+        public int CategoryId { get; set; }
         [Required]
-        public string? categoryName { get; set; }
+        public string? CategoryName { get; set; }
     }
 }
