@@ -5,6 +5,12 @@ using MiniProject2.Repositories;
 using MiniProject2.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+//configuration of session------------------------------------------------- 1
+builder.Services.AddSession(options =>
+{
+	options.IdleTimeout = TimeSpan.FromMinutes(5);
+	options.Cookie.IsEssential = true;
+});
 builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
@@ -59,6 +65,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+// for session-------------------------------2
+app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
 

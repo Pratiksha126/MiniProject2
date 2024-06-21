@@ -7,24 +7,29 @@ namespace MiniProject2.Models
     public class Product
     {
         [Key]
-        [ScaffoldColumn(false)]
+        
         public int ProductId { get; set; }
         [Required]
-        public string? ProductName { get; set; }
+        public string ProductName { get; set; }
         [Required]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
-        [Display(Name ="Upload Image")]
+        [Display(Name ="Image")]
         public string? ImageURL { get; set; }
-        [ForeignKey("categoryId")]
+       
         public int CategoryId { get; set; }
-        [ScaffoldColumn(false)]
+        
 
-        public string? CategoryName { get; set; }
+        [ForeignKey("CategoryId")]
 
+        public virtual Category Category { get; set; }
+
+        [Required]
         public int Discount { get; set; }
         [Required]
         [MaxLength(300)]
         public string? Description { get; set; }
+        [Required]
         public int Stock { get; set; }
 
 

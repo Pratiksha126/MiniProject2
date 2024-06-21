@@ -24,21 +24,22 @@
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ImageURL)
-        </dt>
+            
+         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImageURL)
+            <img src="@Url.Content(Model.ImageURL)" height="300" width="300" />
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CategoryId)
+            @Html.DisplayNameFor(model => model.CategoryName)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CategoryId)
+            @Html.DisplayFor(model => model.CategoryName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Discount)
+            @Html.DisplayNameFor(model => model.Discount)%
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Discount)
+            @Html.DisplayFor(model => model.Discount)%
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Description)

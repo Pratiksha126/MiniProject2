@@ -46,17 +46,28 @@ namespace MiniProject2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Product product, IFormFile file)
         {
-            using (var fs = new FileStream(env.WebRootPath + "\\images\\" + file.FileName, FileMode.Create, FileAccess.Write))
+             try
             {
-                file.CopyTo(fs);
-            }
-            product.ImageURL = "~/images/" + file.FileName;
-        
+                using (var fs = new FileStream(env.WebRootPath + "\\images\\" + file.FileName, FileMode.Create, FileAccess.Write))
+                {
+                    file.CopyTo(fs);
+                }
+                product.ImageURL = "~/images/" + file.FileName;
 
+                var pro = new Product
+                {
+                    ProductName = product.ProductName,
+                    Description = product.Description,
+                    Price = product.Price,
+                    Stock = product.Stock,
+                    ImageURL = product.ImageURL,
+					CategoryId = product.CategoryId,
+					CategoryName = product.CategoryName,
+                    Discount=product.Discount
+                    
+                };
 
-            try
-            {
-                int result = service.AddProduct(product);
+                int result = service.AddProduct(pro);
                 if (result >= 1)
                 {
                     return RedirectToAction(nameof(Index));
@@ -90,27 +101,48 @@ namespace MiniProject2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Product product, IFormFile file)
         {
-            string oldimageurl = HttpContext.Session.GetString("oldImageUrl");
-            if (file != null)
-            {
-                using (var fs = new FileStream(env.WebRootPath + "\\images\\" + file.FileName, FileMode.Create, FileAccess.Write))
-                {
-                    file.CopyTo(fs);
-                }
-                product.ImageURL = "~/images/" + file.FileName;
+            
 
-                string[] str = oldimageurl.Split("/");
-                string str1 = (str[str.Length - 1]);
-                string path = env.WebRootPath + "\\images\\" + str1;
-                System.IO.File.Delete(path);
-            }
-            else
-            {
-                product.ImageURL = oldimageurl;
-            }
             try
             {
-                int result = service.UpdateProduct(product);
+                string oldimageurl = HttpContext.Session.GetString("oldImageURL");
+                if (file != null)
+                {
+                    using (var fs = new FileStream(env.WebRootPath + "\\images\\" + file.FileName, FileMode.Create, FileAccess.Write))
+                    {
+                        file.CopyTo(fs);
+                    }
+                    product.ImageURL = "~/images/" + file.FileName;
+
+                    string[] str = oldimageurl.Split("/");
+                    string str1 = (str[str.Length - 1]);
+                    string path = env.WebRootPath + "\\images\\" + str1;
+                    System.IO.File.Delete(path);
+
+
+                }
+                else
+                {
+                    product.ImageURL = oldimageurl;
+                }
+                var _product = new Product
+                {
+                    ProductId=product.ProductId,
+                    ProductName=product.ProductName,
+                    Price=product.Price,
+                    ImageURL=product.ImageURL,
+
+                     CategoryId=product.CategoryId,
+                     CategoryName=product.CategoryName,
+                     Discount=product.Discount,
+                     Description=product.Description,
+                     Stock=product.Stock
+
+                     
+
+
+                };
+                int result = service.UpdateProduct(_product);
 
                 if (result >= 1)
                 {
