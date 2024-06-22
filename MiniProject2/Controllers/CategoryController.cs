@@ -10,17 +10,17 @@ namespace MiniProject2.Controllers
 
     public class CategoryController : Controller
     {
-        private readonly ICategoryService service;
+        private readonly ICategoryService categoryService;
 
-        public CategoryController(ICategoryService service)
+        public CategoryController(ICategoryService categoryService)
         {
-            this.service = service;
+            this.categoryService = categoryService;
         }
 
         // GET: CategoryController
         public ActionResult Index()
         {
-            var model = service.GetAllCategories();
+            var model = categoryService.GetAllCategories();
             return View(model);
             
         }
@@ -28,7 +28,7 @@ namespace MiniProject2.Controllers
         // GET: CategoryController/Details/5
         public ActionResult Details(int id)
         {
-            var category = service.GetCategoryById(id);
+            var category = categoryService.GetCategoryById(id);
             return View(category);
         }
 
@@ -45,7 +45,7 @@ namespace MiniProject2.Controllers
         {
             try
             {
-                int result = service.AddCategory(category);
+                int result = categoryService.AddCategory(category);
                 if (result >= 1)
                 {
                     return RedirectToAction(nameof(Index));
@@ -67,7 +67,7 @@ namespace MiniProject2.Controllers
         // GET: CategoryController/Edit/5
         public ActionResult Edit(int id)
         {
-            var category = service.GetCategoryById(id);
+            var category = categoryService.GetCategoryById(id);
 
             return View(category);
             
@@ -81,7 +81,7 @@ namespace MiniProject2.Controllers
         {
             try
             {
-                int result = service.UpdateCategory(category);
+                int result = categoryService.UpdateCategory(category);
 
                 if (result >= 1)
                 {
@@ -104,7 +104,7 @@ namespace MiniProject2.Controllers
         // GET: CategoryController/Delete/5
         public ActionResult Delete(int id)
         {
-            var category = service.GetCategoryById(id);
+            var category = categoryService.GetCategoryById(id);
             return View(category);
             
         }
@@ -117,7 +117,7 @@ namespace MiniProject2.Controllers
         {
             try
             {
-                int result = service.DeleteCategory(id);
+                int result = categoryService.DeleteCategory(id);
 
                 if (result >= 1)
                 {

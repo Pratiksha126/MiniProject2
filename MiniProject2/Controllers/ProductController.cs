@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using MiniProject2.Data;
 using MiniProject2.Models;
 using MiniProject2.Services;
 
@@ -7,21 +10,27 @@ namespace MiniProject2.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly IProductService service;
-        private readonly ICategoryService service1;
+        private readonly IProductService productService;
+        private readonly ICategoryService categoryService;
+        private readonly ApplicationDbContext context;
         private Microsoft.AspNetCore.Hosting.IHostingEnvironment env;
 
-        public ProductController(IProductService service, ICategoryService service1, Microsoft.AspNetCore.Hosting.IHostingEnvironment e)
+        public ProductController(IProductService productService, 
+            ICategoryService categoryService,
+            ApplicationDbContext context,
+            Microsoft.AspNetCore.Hosting.IHostingEnvironment e)
         {
-            this.service = service;
-            this.service1 = service1;
+            this.productService = productService;
+            this.categoryService = categoryService;
+            this.context = context;
             this.env = e;
 
         }
         // GET: ProductController
         public ActionResult Index()
         {
-            var model = service.GetAllProducts();
+           
+            var model = productService.GetAllProducts();
             return View(model);
             
         }
@@ -29,7 +38,7 @@ namespace MiniProject2.Controllers
         // GET: ProductController/Details/5
         public ActionResult Details(int id)
         {
-            var product = service.GetProductById(id);
+            var product = productService.GetProductById(id);
             return View(product);
            
         }
@@ -37,7 +46,7 @@ namespace MiniProject2.Controllers
         // GET: ProductController/Create
         public ActionResult Create()
         {
-
+            ViewData["CategoryId"] = new SelectList(context.Categories, "CategoryId", "CategoryName");
             return View();
         }
 
@@ -62,12 +71,11 @@ namespace MiniProject2.Controllers
                     Stock = product.Stock,
                     ImageURL = product.ImageURL,
 					CategoryId = product.CategoryId,
-					CategoryName = product.CategoryName,
                     Discount=product.Discount
                     
                 };
 
-                int result = service.AddProduct(pro);
+                int result = productService.AddProduct(pro);
                 if (result >= 1)
                 {
                     return RedirectToAction(nameof(Index));
@@ -89,9 +97,9 @@ namespace MiniProject2.Controllers
         // GET: ProductController/Edit/5
         public ActionResult Edit(int id)
         {
-            var product = service.GetProductById(id);
+            var product = productService.GetProductById(id);
             HttpContext.Session.SetString("oldImageURL", product.ImageURL);
-
+            ViewData["CategoryId"] = new SelectList(context.Categories, "CategoryId", "CategoryName");
             return View(product);
             
         }
@@ -99,7 +107,7 @@ namespace MiniProject2.Controllers
         // POST: ProductController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Product product, IFormFile file)
+        public async Task<ActionResult> Edit(Product product, IFormFile file)
         {
             
 
@@ -133,7 +141,6 @@ namespace MiniProject2.Controllers
                     ImageURL=product.ImageURL,
 
                      CategoryId=product.CategoryId,
-                     CategoryName=product.CategoryName,
                      Discount=product.Discount,
                      Description=product.Description,
                      Stock=product.Stock
@@ -142,7 +149,7 @@ namespace MiniProject2.Controllers
 
 
                 };
-                int result = service.UpdateProduct(_product);
+                int result = productService.UpdateProduct(_product);
 
                 if (result >= 1)
                 {
@@ -151,6 +158,7 @@ namespace MiniProject2.Controllers
                 }
                 else
                 {
+                    ViewData["CategoryId"] = new SelectList(context.Categories, "CategoryId", "CategoryName");
                     ViewBag.ErrorMsg = "Something went wrong";
                     return View();
                 }
@@ -167,7 +175,7 @@ namespace MiniProject2.Controllers
         // GET: ProductController/Delete/5
         public ActionResult Delete(int id)
         {
-            var product = service.GetProductById(id);
+            var product = productService.GetProductById(id);
             return View(product);
             
         }
@@ -180,7 +188,7 @@ namespace MiniProject2.Controllers
         {
             try
             {
-                int result = service.DeleteProduct(id);
+                int result = productService.DeleteProduct(id);
 
                 if (result >= 1)
                 {
