@@ -43,6 +43,9 @@ builder.Services.AddAuthorization(options => {
 builder.Services.AddScoped<IProductRepo, ProductRepo>();
 builder.Services.AddScoped<IProductService, ProductService>();
 
+builder.Services.AddScoped<ICartRepo, CartRepo>();
+builder.Services.AddScoped<ICartService, CartService>();
+
 
 
 
@@ -72,8 +75,9 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Product}/{action=Index}/{id?}");
-    
+    pattern: "{controller=Cart}/{action=Index}/{id?}");
+
+
 
 app.MapRazorPages();
 
